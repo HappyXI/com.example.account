@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E8EAF6"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- 계산기 아이콘 -->
+    <!-- href="https://www.flaticon.com/kr/free-icons/" title="계산자 아이콘">계산자 아이콘 제작자: kerismaker - Flaticon-->
+    <!-- 앱 제목 -->
+
+    <ImageView
+        android:id="@+id/icon_calculator"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/app_icon"
+        android:src="@drawable/ic_calculator" />
+
+    <TextView
+        android:id="@+id/tv_app_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="한눈에 가계부"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <!-- 구글 로그인 버튼 -->
+    <Button
+        android:id="@+id/btn_google_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@android:color/white"
+        android:drawableLeft="@drawable/ic_google"
+        android:drawablePadding="10dp"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="Google 계정으로 로그인"
+        android:textAllCaps="false"
+        android:textColor="#4285F4"
+        android:textSize="16sp" />
+
+    <!-- 네이버 로그인 버튼 -->
+    <Button
+        android:id="@+id/btn_naver_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#00C300"
+        android:text="네이버 로그인"
+        android:textColor="#FFFFFF" />
+
+    <!-- 카카오 로그인 버튼 -->
+    <Button
+        android:id="@+id/btn_kakao_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#FFE812"
+        android:text="카카오 로그인"
+        android:textColor="#000000" />
+</LinearLayout>

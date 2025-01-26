@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">account</string>
+    <string name="default_web_client_id">YOUR_CLIENT_ID</string>
+    <string name="app_icon">계산기 아이콘</string>
+    <string name="naver_client_id">GhzDz7yDz0d4ypMxVd5c</string>
+    <string name="naver_client_secret">lcKKPOBbQ2</string>
+    <string name="naver_client_name">한눈에 가계부</string>
+    <string name="kakao_app_key">f715fc7cc2d4b0dfea1d2795e6cbab9a</string>
+</resources>

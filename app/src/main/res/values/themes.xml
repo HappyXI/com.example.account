@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Account" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.Account" parent="Base.Theme.Account" />
+
+    <!-- Translucent Theme Without Title Bar -->
+    <style name="Theme.Translucent.NoTitleBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- 배경을 투명하게 설정 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 화면을 투명하게 설정 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 타이틀 바를 제거 -->
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>
