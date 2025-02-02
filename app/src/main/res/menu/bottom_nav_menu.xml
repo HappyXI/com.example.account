@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/nav_calendar"
         android:icon="@drawable/ic_calendar"
-        android:title="달력" />
+        android:title="달력"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/nav_table"
         android:icon="@drawable/ic_table"
-        android:title="표" />
+        android:title="표"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/nav_chart"
         android:icon="@drawable/ic_chart"
-        android:title="차트" />
+        android:title="차트"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_settings"
-        android:title="설정" />
+        android:title="설정"
+        app:showAsAction="always"/>
 </menu>

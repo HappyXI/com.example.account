@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -35,6 +37,10 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -43,17 +49,25 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.runtime.tracing)
+    implementation(libs.androidx.ui)
     implementation(libs.firebase.database.ktx)
+    implementation(libs.googleid)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     // 기존 Firebase BOM 설정
-    implementation(libs.firebase.bom)
+    implementation(platform(libs.firebase.bom))
     // Firebase Authentication 추가
     implementation(libs.firebase.auth)
 
     // Google Play Services Auth 추가 (Google 로그인)
+    implementation(libs.androidx.credentials)
+
+    // optional - needed for credentials support from play services, for devices running
+    // Android 13 and below.
+    implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.play.services.auth)
 
     // 네이버 로그인
@@ -62,8 +76,4 @@ dependencies {
     // 카카오 로그인
     implementation(libs.v2.user) // 카카오 로그인 API 모듈
     implementation(libs.v2.share) // 카카오톡 공유 API 모듈
-
-    // PostgreSQL JDBC Driver 추가
-    implementation("org.postgresql:postgresql:42.2.5")
-
 }

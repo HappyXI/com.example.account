@@ -2,8 +2,26 @@
     <string name="app_name">account</string>
     <string name="default_web_client_id">YOUR_CLIENT_ID</string>
     <string name="app_icon">계산기 아이콘</string>
+    <!-- 네이버 -->
     <string name="naver_client_id">GhzDz7yDz0d4ypMxVd5c</string>
     <string name="naver_client_secret">lcKKPOBbQ2</string>
     <string name="naver_client_name">한눈에 가계부</string>
+    <!-- 카카오 -->
     <string name="kakao_app_key">f715fc7cc2d4b0dfea1d2795e6cbab9a</string>
+
+    <string name="amount_format">%d원</string>
+    <!-- menu_table.xml -->
+    <string name="search">검색</string>
+    <string name="fileter">필터</string>
+    <string name="add">추가</string>
+
+    <!-- 카테고리 목록 추가 -->
+    <string-array name="category_list">
+        <item>식비</item>
+        <item>교통비</item>
+        <item>쇼핑</item>
+        <item>의료</item>
+        <item>공과금</item>
+        <item>기타</item>
+    </string-array>
 </resources>

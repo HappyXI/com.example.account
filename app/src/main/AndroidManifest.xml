@@ -18,17 +18,22 @@
         android:theme="@style/Theme.Account"
         tools:targetApi="31">
 
-        <!-- LoginActivity 등록 -->
-        <activity android:name=".model.LoginActivity" />
+
 
         <activity
-            android:name=".model.MainActivity"
+            android:name=".model.LauncherActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 로그인 액티비티 -->
+        <activity android:name=".model.LoginActivity" />
+
+        <!-- 메인 액티비티 -->
+        <activity android:name=".model.MainActivity" />
 
         <!-- 네이버 로그인 SDK를 위한 액티비티 등록 -->
         <activity
