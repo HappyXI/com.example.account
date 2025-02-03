@@ -34,7 +34,7 @@ class TableAdapter : ListAdapter<Table, TableAdapter.TableViewHolder>(TableDiffC
         fun bind(table: Table) {
             binding.tvCategory.text = table.category
             binding.tvDescription.text = table.description
-            binding.tvAmount.text = binding.root.context.getString(R.string.amount_format, table.amount.toBigInteger())
+            binding.tvAmount.text = binding.root.context.getString(R.string.amount_format, table.amount)
             binding.tvDate.text = table.date
 
             // 금액 색상 변경 (수익: 파란색, 지출: 빨간색)

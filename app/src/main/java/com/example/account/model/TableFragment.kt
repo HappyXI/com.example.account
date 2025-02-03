@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -20,13 +21,14 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.account.R
 import com.example.account.adapter.TableAdapter
 import com.example.account.data.Table
-import com.example.account.data.TableManager
-import com.example.account.data.TableFileHelper
 import com.example.account.databinding.FragmentTableBinding
+import java.lang.IllegalArgumentException
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -78,8 +80,8 @@ class TableFragment : Fragment() {
                     kind = kind
                 )
 
-                TableManager.addTable(newTransaction)  // 데이터 저장
-                TableFileHelper.saveTables(requireContext(), TableManager.filterIncomeAndExpense())  // CSV 저장
+                // ViewModel를 통해 데이터 추가 ( 자동으로 CSV 저장 & UI 갱신 등)
+                viewModel.addTransaction(newTransaction)
 
                 Toast.makeText(requireContext(), "내역이 추가되었습니다.", Toast.LENGTH_SHORT).show()
             }
@@ -133,12 +135,33 @@ class TableFragment : Fragment() {
 
         // RecyclerView 설정
         tableAdapter = TableAdapter()
-        binding.recyclerViewTable.adapter = tableAdapter
+        binding.recyclerViewTable.apply {
+            layoutManager = LinearLayoutManager(requireContext()) // ✅ LayoutManager 추가
+            adapter = tableAdapter
+            setHasFixedSize(true) // 성능 최적화
+        }
 
         // 데이터 변경 시 RecyclerView 업데이트
-        viewModel = ViewModelProvider(this)[TableViewModel::class.java]
-        viewModel.filteredTransactions.observe(viewLifecycleOwner) {
-            tableAdapter.submitList(it)
+        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(TableViewModel::class.java)) {
+                    return TableViewModel(requireActivity().application) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        })[TableViewModel::class.java]
+
+        // LiveData 관찰하여 RecyclerView 업데이트
+        viewModel.filteredTransactions.observe(viewLifecycleOwner) { data ->
+            Log.d("TABLE_FRAGMENT", "🔄 RecyclerView 업데이트 시도, 데이터 개수: ${data.size}")
+
+            if (data.isNotEmpty()) {
+                Log.d("TABLE_FRAGMENT", "✅ RecyclerView에 데이터 반영됨: ${data.size}개")
+            } else {
+                Log.e("TABLE_FRAGMENT", "⚠️ RecyclerView에 표시할 데이터 없음")
+            }
+
+            tableAdapter.submitList(data)
         }
 
         // 필터 버튼 클릭 시 데이터 변경

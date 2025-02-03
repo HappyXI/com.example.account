@@ -8,12 +8,12 @@ object TableManager {
         val incomeList = tables.filter { it.kind == "수익" }
         val expenseList = tables.filter { it.kind == "지출" }
 
-        println("📌 [수익 목록]")
+        println("[수익 목록]")
         incomeList.forEach {
             println("${it.no}. ${it.category} | ${it.description} | ${it.amount}원 | ${it.date}")
         }
 
-        println("📌 [지출 목록]")
+        println("[지출 목록]")
         expenseList.forEach {
             println("${it.no}. ${it.category} | ${it.description} | ${it.amount}원 | ${it.date}")
         }

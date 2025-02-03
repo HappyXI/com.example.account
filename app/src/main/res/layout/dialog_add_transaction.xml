@@ -93,27 +93,4 @@
             android:text="지출" />
     </RadioGroup>
 
-    <!-- 확인 및 취소 버튼 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="end"
-        app:layout_constraintTop_toBottomOf="@id/rg_kind"
-        android:layout_marginTop="12dp">
-
-        <Button
-            android:id="@+id/btn_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="취소"
-            android:layout_marginEnd="8dp"/>
-
-        <Button
-            android:id="@+id/btn_confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="확인"/>
-    </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
