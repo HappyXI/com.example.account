@@ -134,9 +134,12 @@ class TableFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         // RecyclerView 설정
-        tableAdapter = TableAdapter()
+        tableAdapter = TableAdapter { transaction ->
+            showDetailDialog(transaction) // 클릭하면 다이얼로그 띄우기
+        }
+
         binding.recyclerViewTable.apply {
-            layoutManager = LinearLayoutManager(requireContext()) // ✅ LayoutManager 추가
+            layoutManager = LinearLayoutManager(requireContext()) // LayoutManager 추가
             adapter = tableAdapter
             setHasFixedSize(true) // 성능 최적화
         }
@@ -164,10 +167,18 @@ class TableFragment : Fragment() {
             tableAdapter.submitList(data)
         }
 
+
+
         // 필터 버튼 클릭 시 데이터 변경
         binding.btnFilterIncome.setOnClickListener { viewModel.filterTransactions("수익") }
         binding.btnFilterExpense.setOnClickListener { viewModel.filterTransactions("지출") }
         binding.btnFilterNet.setOnClickListener { viewModel.filterTransactions("순수입") }
+    }
+
+    // 상세 내역 확인
+    private fun showDetailDialog(transaction: Table) {
+        val dialog = DetailDialogFragment(transaction)
+        dialog.show(childFragmentManager, "DetailDialogFragment")
     }
 
     override fun onDestroyView() {

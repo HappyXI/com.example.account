@@ -124,8 +124,8 @@ class LoginActivity : AppCompatActivity() {
             override fun onSuccess() {
                 Log.d("LoginActivity", "Naver Login Success")
                 fetchNaverUserInfo() // 사용자 정보 요청
-                //navigateToMain()
-                // loginUser()
+                navigateToMain()
+                loginUser()
             }
 
             override fun onFailure(httpStatus: Int, message: String) {

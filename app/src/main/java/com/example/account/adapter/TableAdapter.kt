@@ -11,7 +11,8 @@ import com.example.account.data.Table
 import com.example.account.databinding.ItemTableRowBinding
 
 // TableAdapter의 생성자
-class TableAdapter : ListAdapter<Table, TableAdapter.TableViewHolder>(TableDiffCallback()) {
+class TableAdapter(private val onItemClick: (Table) -> Unit) :
+    ListAdapter<Table, TableAdapter.TableViewHolder>(TableDiffCallback()) {
 
     // 새로운 ViewHolder 객체를 생성하여 반환
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TableViewHolder {
@@ -22,7 +23,12 @@ class TableAdapter : ListAdapter<Table, TableAdapter.TableViewHolder>(TableDiffC
 
     // ViewHolder에 데이터를 바인딩
     override fun onBindViewHolder(holder: TableViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val item = getItem(position)
+        holder.bind(item)
+
+        holder.itemView.setOnClickListener {
+            onItemClick(item) // ✅ 아이템 클릭 시 함수 호출
+        }
     }
 
     // Recycler View의 각 아이템을 담당하는 ViewHolder

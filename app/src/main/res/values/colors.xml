@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- ✅ 회색 추가 -->
+    <color name="gray">#B0B0B0</color>  <!-- 연한 회색 -->
+    <color name="dark_gray">#808080</color>  <!-- 진한 회색 -->
 </resources>

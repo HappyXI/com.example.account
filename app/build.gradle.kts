@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.firebase.database.ktx)
     implementation(libs.googleid)
+    implementation(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -76,4 +77,11 @@ dependencies {
     // 카카오 로그인
     implementation(libs.v2.user) // 카카오 로그인 API 모듈
     implementation(libs.v2.share) // 카카오톡 공유 API 모듈
+
+    implementation(libs.annotations)
+
+    // 중복된 com.intellij:annotations 라이브러리 제외
+    configurations.all {
+        exclude(group = "com.intellij", module = "annotations")
+    }
 }
