@@ -9,11 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import com.example.account.R
-import com.example.account.util.LoginPreference
+import com.example.account.util.DLoginPreference
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import android.util.Base64
-import com.example.account.data.MemberFileHelper
+import com.example.account.util.MemberFileHelper
 import com.example.account.data.Member
 import com.example.account.data.MemberManager
 import org.json.JSONObject
@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginUser() { // 수정
         // 로그인 성공 처리 (공통 처리)
-        LoginPreference.setLoggedIn(this, true) // 로그인 상태 저장
+        DLoginPreference.setLoggedIn(this, true) // 로그인 상태 저장
         navigateToMain() // 메인 화면으로 이동
     }
 

@@ -22,8 +22,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_category_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:entries="@array/category_list"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- 설명 입력 -->
     <EditText

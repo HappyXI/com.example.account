@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="@drawable/dialog_background"
-    android:orientation="vertical">
+    android:background="@drawable/dialog_background">
 
+    <!-- 제목 텍스트 (상세 내역) -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
@@ -13,50 +15,99 @@
         android:text="상세 내역"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal"
-        android:paddingBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
+    <!-- 수정 버튼 -->
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="55dp"
+        android:backgroundTint="@color/primary"
+        android:minWidth="0dp"
+        android:padding="6dp"
+        android:text="수정"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvTitle"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/red"
+        android:minWidth="0dp"
+        android:padding="6dp"
+        android:text="삭제"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvTitle"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <!-- 날짜 -->
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="📅 날짜: "
         android:textSize="16sp"
-        android:padding="4dp"/>
+        android:padding="4dp"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"/>
 
+    <!-- 금액 -->
     <TextView
         android:id="@+id/tvAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="💰 금액: "
         android:textSize="16sp"
-        android:padding="4dp"/>
+        android:padding="4dp"
+        app:layout_constraintTop_toBottomOf="@id/tvDate"
+        app:layout_constraintStart_toStartOf="parent"/>
 
+    <!-- 카테고리 -->
     <TextView
         android:id="@+id/tvCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="📂 카테고리: "
         android:textSize="16sp"
-        android:padding="4dp"/>
+        android:padding="4dp"
+        app:layout_constraintTop_toBottomOf="@id/tvAmount"
+        app:layout_constraintStart_toStartOf="parent"/>
 
+    <!-- 장소 -->
     <TextView
         android:id="@+id/tvLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="📍 장소: "
         android:textSize="16sp"
-        android:padding="4dp"/>
+        android:padding="4dp"
+        app:layout_constraintTop_toBottomOf="@id/tvCategory"
+        app:layout_constraintStart_toStartOf="parent"/>
 
+    <!-- 메모 -->
     <TextView
         android:id="@+id/tvMemo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="📝 메모: "
         android:textSize="16sp"
-        android:padding="4dp"/>
+        android:padding="4dp"
+        app:layout_constraintTop_toBottomOf="@id/tvLocation"
+        app:layout_constraintStart_toStartOf="parent"/>
 
+    <!-- 닫기 버튼 -->
     <Button
         android:id="@+id/btnClose"
         android:layout_width="match_parent"
@@ -65,5 +116,9 @@
         android:backgroundTint="@color/gray"
         android:textColor="@color/white"
         android:padding="10dp"
-        android:layout_marginTop="10dp"/>
-</LinearLayout>
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvMemo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

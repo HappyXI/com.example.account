@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.Packaging
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -54,6 +52,7 @@ dependencies {
     implementation(libs.firebase.database.ktx)
     implementation(libs.googleid)
     implementation(libs.androidx.room.compiler)
+    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -79,6 +78,8 @@ dependencies {
     implementation(libs.v2.share) // 카카오톡 공유 API 모듈
 
     implementation(libs.annotations)
+
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     // 중복된 com.intellij:annotations 라이브러리 제외
     configurations.all {

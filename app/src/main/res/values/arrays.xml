@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 카테고리 목록 추가 -->
+    <string-array name="income_categories">
+        <item>급여</item>
+        <item>용돈</item>
+        <item>금융수익</item>
+        <item>공제금</item>
+        <item>카드캐시백</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="expense_categories">
+        <item>식비</item>
+        <item>교통비</item>
+        <item>쇼핑</item>
+        <item>의료</item>
+        <item>공과금</item>
+        <item>기타</item>
+    </string-array>
+</resources>

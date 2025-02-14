@@ -12,16 +12,7 @@
     <string name="amount_format">%d원</string>
     <!-- menu_table.xml -->
     <string name="search">검색</string>
-    <string name="fileter">필터</string>
+    <string name="filter">필터</string>
     <string name="add">추가</string>
-
-    <!-- 카테고리 목록 추가 -->
-    <string-array name="category_list">
-        <item>식비</item>
-        <item>교통비</item>
-        <item>쇼핑</item>
-        <item>의료</item>
-        <item>공과금</item>
-        <item>기타</item>
-    </string-array>
+    <string name="cancel">취소</string>
 </resources>

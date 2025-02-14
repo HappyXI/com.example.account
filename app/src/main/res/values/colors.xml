@@ -6,4 +6,7 @@
     <!-- ✅ 회색 추가 -->
     <color name="gray">#B0B0B0</color>  <!-- 연한 회색 -->
     <color name="dark_gray">#808080</color>  <!-- 진한 회색 -->
+
+    <color name="red">#FF0000</color> <!-- 빨간색 -->
+    <color name="primary">#5ABEF5</color> <!-- 하늘색 -->
 </resources>

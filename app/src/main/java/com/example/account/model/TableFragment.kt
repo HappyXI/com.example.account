@@ -28,6 +28,9 @@ import com.example.account.R
 import com.example.account.adapter.TableAdapter
 import com.example.account.data.Table
 import com.example.account.databinding.FragmentTableBinding
+import com.example.account.util.DatePickerUtils
+import com.example.account.util.SpinnerUtils
+import com.example.account.viewmodel.TableViewModel
 import java.lang.IllegalArgumentException
 import java.util.Calendar
 import java.util.Date
@@ -38,6 +41,8 @@ class TableFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: TableViewModel  // TableViewModel을 사용하여 데이터 관리
     private lateinit var tableAdapter: TableAdapter // RecyclerView에서 데이터를 표시할 TableAdapter
+    private var currentCalendar: Calendar = Calendar.getInstance()
+    private val dateFormat = SimpleDateFormat("yyyy년 M월", Locale.KOREAN)
 
     // 수입 / 지출 내역 추가
     private fun showAddTransactionDialog() {
@@ -49,26 +54,45 @@ class TableFragment : Fragment() {
         val rbIncome = dialogView.findViewById<RadioButton>(R.id.rb_income)
         val rbExpense = dialogView.findViewById<RadioButton>(R.id.rb_expense)
 
+        // 초기 카테고리 설정 (기본값: 수익)
+        var selectedKind = "수익"
+        SpinnerUtils.updateCategorySpinner(requireContext(), spinnerCategory, selectedKind)
+
+        // 라디오 버튼 선택 시 카테고리 리스트 변경
+        // 라디오 버튼 수익 체크 시
+        rbIncome.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                selectedKind = "수익"
+                SpinnerUtils.updateCategorySpinner(requireContext(), spinnerCategory, selectedKind)
+            }
+        }
+        // 라디오 버튼 지출 체크 시
+        rbExpense.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                selectedKind = "지출"
+                SpinnerUtils.updateCategorySpinner(requireContext(), spinnerCategory, selectedKind)
+            }
+        }
+
         // 날짜 선택 버튼 설정
         var selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()) // 기본값 오늘 날짜
         btnSelectDate.text = selectedDate
 
+        // 날짜 선택 버튼 클릭 리스너
         btnSelectDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            DatePickerDialog(requireContext(), { _, year, month, day ->
-                selectedDate = "$year-${month + 1}-$day"
-                btnSelectDate.text = selectedDate
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+            DatePickerUtils.showDatePicker(requireContext(), btnSelectDate) { date ->
+                selectedDate = date
+            }
         }
 
         val dialog = AlertDialog.Builder(requireContext())
             .setTitle("내역 추가")
             .setView(dialogView)
             .setPositiveButton("추가") { _, _ ->
-                val category = spinnerCategory.selectedItem.toString()  // 선택된 카테고리 가져오기
-                val description = etDescription.text.toString()
-                val amount = etAmount.text.toString().toIntOrNull() ?: 0
-                val kind = if (rbIncome.isChecked) "수익" else "지출"
+                val category = spinnerCategory.selectedItem.toString()    // 선택된 카테고리
+                val description = etDescription.text.toString()           // 내용
+                val amount = etAmount.text.toString().toIntOrNull() ?: 0  // 금액
+                val kind = if (rbIncome.isChecked) "수익" else "지출"      // 수익 / 지출 구분
 
                 // 데이터 저장 및 CSV 저장
                 val newTransaction = Table(
@@ -91,6 +115,52 @@ class TableFragment : Fragment() {
         dialog.show()
     }
 
+    // 상세 내역 확인
+    private fun showDetailDialog(transaction: Table) {
+        val dialog = DetailDialogFragment(transaction) {
+            updateRecyclerViewData() // 다이얼로그가 닫히면 RecyclerView 업데이트
+        }
+        dialog.show(childFragmentManager, "DetailDialogFragment")
+    }
+
+    // 1달 이동하는 함수
+    private fun changeMonth(offset: Int) {
+        currentCalendar.add(Calendar.MONTH, offset)
+        updateMonthDisplay()
+    }
+
+    // 현재 월을 UI에 업데이트하는 함수
+    private fun updateMonthDisplay() {
+        binding.tvCurrentMonth.text = dateFormat.format(currentCalendar.time)
+        updateRecyclerViewData()
+    }
+
+    // 특정 월을 선택하는 다이얼로그
+    private fun showMonthPickerDialog() {
+        val months = (1..12).map { "${currentCalendar.get(Calendar.YEAR)}년 ${it}월" }.toTypedArray()
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("달 선택")
+            .setItems(months) { _, which ->
+                currentCalendar.set(Calendar.MONTH, which)
+                updateMonthDisplay()
+            }
+            .setNegativeButton("취소", null)
+            .show()
+    }
+
+    // RecyclerView 데이터 업데이트 (월 기준 필터링)
+    fun updateRecyclerViewData() {
+        val selectedYear = currentCalendar.get(Calendar.YEAR)
+        val selectedMonth = currentCalendar.get(Calendar.MONTH) + 1
+
+        viewModel.filterTransactionsByMonth(selectedYear, selectedMonth)
+
+        // RecyclerViewTable 즉시 새로고침
+        binding.recyclerViewTable.adapter?.notifyDataSetChanged()
+    }
+
+    /************************************** Main **************************************/
     // 프래그먼트 UI 생성
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -102,6 +172,9 @@ class TableFragment : Fragment() {
     // UI 설정 및 데이터 처리
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // ViewModel 초기화
+        viewModel = ViewModelProvider(this)[TableViewModel::class.java]
 
         // toolbar를 ActionBar로 설정
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
@@ -117,6 +190,24 @@ class TableFragment : Fragment() {
                 return when (menuItem.itemId) {
                     R.id.action_search -> {
                         Toast.makeText(requireContext(), "검색 버튼 클릭됨", Toast.LENGTH_SHORT).show()
+                        // 내용 검색
+                        val editText = EditText(requireContext()).apply {
+                            hint = "검색어를 입력하세요"
+                        }
+
+                        AlertDialog.Builder(requireContext())
+                            .setTitle("검색")
+                            .setView(editText)
+                            .setPositiveButton("검색") { _, _ ->
+                                val query = editText.text.toString().trim()
+                                if (query.isNotEmpty()) {
+                                    viewModel.filterTransactionsByDescription(query) // ✅ 검색 기능 실행
+                                } else {
+                                    viewModel.filterTransactions("") // ✅ 검색어가 없으면 전체 목록 표시
+                                }
+                            }
+                            .setNegativeButton("취소", null)
+                            .show()
                         true
                     }
                     R.id.action_filter -> {
@@ -133,9 +224,29 @@ class TableFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
+        // 초기 월 설정
+        updateMonthDisplay()
+
+        // 이전 달 버튼 클릭
+        binding.btnPrevMonth.setOnClickListener {
+            changeMonth(-1)
+        }
+
+        // 다음 달 버튼 클릭
+        binding.btnNextMonth.setOnClickListener {
+            changeMonth(1)
+        }
+
+        // 중앙 날짜 클릭 시 다이얼로그 띄우기
+        binding.tvCurrentMonth.setOnClickListener {
+            showMonthPickerDialog()
+        }
+
         // RecyclerView 설정
         tableAdapter = TableAdapter { transaction ->
             showDetailDialog(transaction) // 클릭하면 다이얼로그 띄우기
+            // 다이얼로그가 닫힌 후 RecyclerView 새로고침
+            // updateRecyclerViewData()
         }
 
         binding.recyclerViewTable.apply {
@@ -156,29 +267,20 @@ class TableFragment : Fragment() {
 
         // LiveData 관찰하여 RecyclerView 업데이트
         viewModel.filteredTransactions.observe(viewLifecycleOwner) { data ->
-            Log.d("TABLE_FRAGMENT", "🔄 RecyclerView 업데이트 시도, 데이터 개수: ${data.size}")
+            tableAdapter.submitList(ArrayList(data))     // 필터링된 데이터 적용
+            Log.d("TABLE_FRAGMENT", "RecyclerView 업데이트 시도, 데이터 개수: ${data.size}")
 
             if (data.isNotEmpty()) {
-                Log.d("TABLE_FRAGMENT", "✅ RecyclerView에 데이터 반영됨: ${data.size}개")
+                Log.d("TABLE_FRAGMENT", "RecyclerView에 데이터 반영됨: ${data.size}개")
             } else {
-                Log.e("TABLE_FRAGMENT", "⚠️ RecyclerView에 표시할 데이터 없음")
+                Log.e("TABLE_FRAGMENT", "RecyclerView에 표시할 데이터 없음")
             }
-
-            tableAdapter.submitList(data)
         }
-
-
 
         // 필터 버튼 클릭 시 데이터 변경
         binding.btnFilterIncome.setOnClickListener { viewModel.filterTransactions("수익") }
         binding.btnFilterExpense.setOnClickListener { viewModel.filterTransactions("지출") }
         binding.btnFilterNet.setOnClickListener { viewModel.filterTransactions("순수입") }
-    }
-
-    // 상세 내역 확인
-    private fun showDetailDialog(transaction: Table) {
-        val dialog = DetailDialogFragment(transaction)
-        dialog.show(childFragmentManager, "DetailDialogFragment")
     }
 
     override fun onDestroyView() {

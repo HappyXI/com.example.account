@@ -27,7 +27,7 @@ class TableAdapter(private val onItemClick: (Table) -> Unit) :
         holder.bind(item)
 
         holder.itemView.setOnClickListener {
-            onItemClick(item) // ✅ 아이템 클릭 시 함수 호출
+            onItemClick(item) // 아이템 클릭 시 함수 호출
         }
     }
 

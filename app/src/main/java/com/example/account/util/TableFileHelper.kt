@@ -1,7 +1,8 @@
-package com.example.account.data
+package com.example.account.util
 
 import android.content.Context
 import android.util.Log
+import com.example.account.data.Table
 import java.io.File
 
 object TableFileHelper {

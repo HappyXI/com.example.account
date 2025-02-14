@@ -1,9 +1,8 @@
 package com.example.account.util
 
 import android.content.Context
-import android.content.SharedPreferences
 
-object LoginPreference {
+object DLoginPreference {
     private const val PREF_NAME = "account_prefs"
     private const val KEY_IS_LOGGED_IN = "is_logged_in"
 

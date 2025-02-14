@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.account.R
 import com.example.account.adapter.MemberAdapter
-import com.example.account.data.MemberFileHelper
+import com.example.account.util.MemberFileHelper
 import com.example.account.data.Member
 
 class MemberFragment : Fragment() {
