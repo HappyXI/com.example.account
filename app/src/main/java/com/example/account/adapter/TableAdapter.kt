@@ -1,6 +1,7 @@
 package com.example.account.adapter
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -24,6 +25,8 @@ class TableAdapter(private val onItemClick: (Table) -> Unit) :
     // ViewHolder에 데이터를 바인딩
     override fun onBindViewHolder(holder: TableViewHolder, position: Int) {
         val item = getItem(position)
+        Log.d("RecyclerView_Test", "Binding Item - Position: $position, Amount: ${item.amount}, Category: ${item.category}")
+
         holder.bind(item)
 
         holder.itemView.setOnClickListener {

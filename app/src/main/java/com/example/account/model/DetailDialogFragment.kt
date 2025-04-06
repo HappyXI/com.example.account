@@ -3,12 +3,12 @@ package com.example.account.model
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.account.R
 import com.example.account.data.Table
 import com.example.account.databinding.DialogDetailBinding
 import com.example.account.viewmodel.TableViewModel
@@ -74,7 +74,17 @@ class DetailDialogFragment(
                 .setMessage("이 내역을 삭제하시겠습니까?")
                 .setPositiveButton("삭제") { _, _ ->
                     viewModel.removeTransaction(transaction.no) // 삭제 기능 추가
-                    (requireActivity().supportFragmentManager.findFragmentByTag("TableFragment") as? TableFragment)?.updateRecyclerViewData() // TableFragment를 찾아서 새로고침 호출
+
+                    Log.d("DetailDialog_Test", "Transaction Deleted: ${transaction.no}")
+
+                    val tableFragment = requireActivity().supportFragmentManager.findFragmentByTag("TableFragment") as? TableFragment
+                    if (tableFragment != null) {
+                        Log.d("DetailDialog_Test", "TableFragment 찾음! RecyclerView 업데이트 실행")
+                        tableFragment.updateRecyclerViewData()
+                    } else {
+                        Log.e("DetailDialog_Test", "TableFragment 찾을 수 없음")
+                    }
+                    // ondismissListener?.invoke() // 다이얼로그가 닫힐 때 업데이트 실행
                     dismiss() // 다이얼로그 닫기
                 }
                 .setNegativeButton("취소", null)

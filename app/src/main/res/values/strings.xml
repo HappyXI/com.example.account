@@ -9,7 +9,7 @@
     <!-- 카카오 -->
     <string name="kakao_app_key">f715fc7cc2d4b0dfea1d2795e6cbab9a</string>
 
-    <string name="amount_format">%d원</string>
+    <string name="amount_format">%,d원</string>
     <!-- menu_table.xml -->
     <string name="search">검색</string>
     <string name="filter">필터</string>

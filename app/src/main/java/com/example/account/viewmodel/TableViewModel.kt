@@ -27,6 +27,8 @@ class TableViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun loadTransactionsFromCsv() {
         val data = TableFileHelper.loadTables(appContext)
+        Log.d("TABLE_LOAD_TEST", "📌 CSV 데이터 로드 개수: ${data.size}개")
+
         _transactions.postValue(data)
         _filteredTransactions.postValue(data)
 
@@ -42,8 +44,6 @@ class TableViewModel(application: Application) : AndroidViewModel(application) {
         _filteredTransactions.value = currentData
 
         TableFileHelper.saveTables(appContext, currentData) // CSV에 저장
-
-        //loadTransactionsFromCsv()
     }
 
     //  거래 내역 수정
@@ -53,23 +53,28 @@ class TableViewModel(application: Application) : AndroidViewModel(application) {
 
         if (index != -1) {
             currentData[index] = updatedTransaction
-            _transactions.value = ArrayList(currentData) // ✅ 새로운 리스트로 강제 변경
+            _transactions.value = ArrayList(currentData) // 새로운 리스트로 강제 변경
             _filteredTransactions.value = ArrayList(currentData)
 
-            TableFileHelper.saveTables(appContext, currentData) // ✅ CSV 파일 저장
-            loadTransactionsFromCsv() // ✅ CSV 다시 불러오기 (RecyclerView 즉시 반영)
+            TableFileHelper.saveTables(appContext, currentData) // CSV 파일 저장
         }
     }
 
     // 특정 거래 삭제
     fun removeTransaction(no: Int) {
-        val updatedData = _transactions.value?.filter { it.no != no } ?: emptyList()
+        val currentList = _transactions.value.orEmpty()
+        val updatedList = currentList.filter { it.no != no }
+        Log.d("ViewModel_Test","Before Delete - Transactions Count: ${currentList.size}")
+        Log.d("ViewModel_Test","after Delete - Transactions Count: ${updatedList.size}")
 
-        _transactions.value = ArrayList(updatedData)
-        _filteredTransactions.value = ArrayList(updatedData)
+        _transactions.value = ArrayList(updatedList)
+        _filteredTransactions.value = ArrayList(updatedList)
 
-        TableFileHelper.saveTables(appContext, updatedData) // CSV 파일 저장
-        loadTransactionsFromCsv() // CSV 다시 불러오기 (RecyclerView 즉시 반영)
+        TableFileHelper.saveTables(appContext, updatedList) // CSV 파일 저장
+
+        // LiveData 변경을 강제 트리거
+        _transactions.postValue(ArrayList(updatedList))
+        _filteredTransactions.postValue(ArrayList(updatedList))
     }
 
     // 전체 데이터 삭제
@@ -81,19 +86,40 @@ class TableViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // 특정 월의 데이터만 필터링하는 함수 추가
-    fun filterTransactionsByMonth(year: Int, month: Int) {
-        val filteredData = _transactions.value?.filter { transaction ->
-            val dateParts = transaction.date.split("-") // 날짜가 "YYYY-MM-DD" 형식이라고 가정
+    fun filterTransactionsByMonth(year: Int, month: Int, type: String? = null) {
+        val allTransactions = _transactions.value
+        if (allTransactions == null) {
+            Log.e("FILTER_TEST", "❌ 필터링 실패: _transactions가 아직 초기화되지 않음!")
+            return
+        }
+        Log.d("TABLE_FILTER_TEST", "전체 거래 내역 개수 (필터링 시작 전) : ${allTransactions.size}")
+
+        val filteredByMonth = _transactions.value?.filter { transaction ->
+            Log.d("FILTER_TEST","Checking Transaction: ${transaction.date}")
+            val normalizedDate = transaction.date.replace("/", "-").trim()
+            val dateParts = normalizedDate.split("-") // 날짜가 "YYYY-MM-DD" 형식이라고 가정
             if (dateParts.size == 3) {
                 val transactionYear = dateParts[0].toInt()
                 val transactionMonth = dateParts[1].toInt()
+
+                Log.d("FILTER_TEST","Checking Transaction: ${transaction.date} -> Year: $transactionYear, Month: $transactionMonth")
+
                 transactionYear == year && transactionMonth == month
             } else {
                 false
             }
         } ?: emptyList()
 
-        _filteredTransactions.value = filteredData
+        Log.d("FILTER_TEST", "Filtered Count: ${filteredByMonth.size}")
+
+        _filteredTransactions.value = when (type) {
+            "수익" -> filteredByMonth.filter { it.kind == "수익" }
+            "지출" -> filteredByMonth.filter { it.kind == "지출" }
+            "손익계산" -> listOf(
+                Table(0, "손익계산", "총 수익 - 총 지출", getNetIncome(), "", "결과")
+            )
+            else -> filteredByMonth // 전체 보기
+        }
     }
 
     // 내용 검색 함수 추가
@@ -105,19 +131,36 @@ class TableViewModel(application: Application) : AndroidViewModel(application) {
         _filteredTransactions.value = filteredData // LiveData 업데이트
     }
 
-    // 데이터 필터링
-    fun filterTransactions(type: String) {
-        _filteredTransactions.value = when (type) {
-            "수익" -> _transactions.value?.filter { it.kind == "수익" }
-            "지출" -> _transactions.value?.filter { it.kind == "지출" }
-            "순수입" -> listOf(
-                Table(0, "순수입", "총 수익 - 총 지출", getNetIncome(), "", "결과")
-            )
-            else -> _transactions.value // 전체 보기
+    //카테고리별 수익/지출 종합을 계산하여 백분율 변환
+    fun getCategoryWisePercentage(isExpense: Boolean, year: Int, month: Int): Map<String, Float> {
+        val filteredTransactions = transactions.value?.filter { transaction ->
+            val dateParts = transaction.date.split("-")
+            if (dateParts.size == 3) {
+                val transactionYear = dateParts[0].toInt()
+                val transactionMonth = dateParts[1].toInt()
+                transactionYear == year && transactionMonth == month
+            } else {
+                false
+            }
+        }?.filter {it.kind == if (isExpense) "지출" else "수익" } ?: emptyList()
+
+        // 카테고리별 합계 계산
+        val categoryTotalMap = filteredTransactions.groupBy { it.category }
+            .mapValues { (_, transactions) -> transactions.sumOf { it.amount }.toFloat() }
+
+        // 전체 금액 합산
+        val totalAmount = categoryTotalMap.values.sum()
+
+        // 백분율 변환
+        return if (totalAmount > 0) {
+            categoryTotalMap.mapValues { (_, amount) -> (amount / totalAmount) * 100 }
+        } else {
+            emptyMap()
         }
     }
 
-    // 순수입 계산
+
+    // 손익 계산
     private fun getNetIncome(): Int {
         val income = _transactions.value?.filter { it.kind == "수익" }?.sumOf { it.amount } ?: 0
         val expense = _transactions.value?.filter { it.kind == "지출" }?.sumOf { it.amount } ?: 0

@@ -18,8 +18,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            app:title="가계부"
+            android:background="@color/primary"
+            app:title="표"
             app:titleTextColor="@android:color/white"
             app:menu="@menu/menu_table"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="16dp"
-            android:gravity="center">
+            android:gravity="center" >
 
                 <Button
                     android:id="@+id/btn_prev_month"
@@ -80,7 +80,7 @@
                 android:id="@+id/btn_filter_net"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="순수입"
+                android:text="손익계산"
                 android:layout_marginStart="8dp" />
         </LinearLayout>
 

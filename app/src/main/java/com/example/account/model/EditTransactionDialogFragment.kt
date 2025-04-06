@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.account.R
 import com.example.account.data.Table
 import com.example.account.databinding.DialogEditTransactionBinding
+import com.example.account.util.DatePickerUtils
 import com.example.account.util.SpinnerUtils
 import com.example.account.viewmodel.TableViewModel
 
@@ -25,12 +26,27 @@ class EditTransactionDialogFragment(private val transaction: Table) : DialogFrag
     private val binding get() = _binding!!
     private lateinit var viewModel: TableViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // 다이얼로그 배경 및 크기 설정
+        setStyle(STYLE_NO_TITLE, android.R.style.Theme_Material_Light_Dialog_NoActionBar)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = DialogEditTransactionBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            // 다이얼로그 배경 및 크기 설정
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,10 +71,23 @@ class EditTransactionDialogFragment(private val transaction: Table) : DialogFrag
             SpinnerUtils.updateCategorySpinner(requireContext(), binding.spinnerCategory, selectedKind)
         }
 
+        // 날짜 선택 버튼 설정
+        var selectedDate = DatePickerUtils.getCurrentDate()
+        binding.etDate.setText(selectedDate)
+
+        // 날짜 선택 버튼 클릭 리스너
+        binding.btnSelectDate.setOnClickListener {
+            DatePickerUtils.showDatePicker(requireContext()) { date ->
+                binding.etDate.setText(date)
+            }
+        }
+
+
         // 기존 데이터 표시
         binding.etDescription.setText(transaction.description)
         binding.etAmount.setText(transaction.amount.toString())
         binding.etDate.setText(transaction.date)
+
         // 기존 지출 구분 값에 따라 라디오버튼 체크 설정
         if (transaction.kind == "수익") {
             binding.rbIncome.isChecked = true // 수익 버튼 체크

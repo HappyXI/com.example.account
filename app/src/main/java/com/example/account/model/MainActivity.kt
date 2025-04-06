@@ -15,7 +15,8 @@ class MainActivity : AppCompatActivity() {
 
         // BottomNavigationView 초기화
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
+        bottomNavigationView.itemIconTintList = null
+        
         // 초기 화면 설정 (달력 화면)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -40,7 +41,5 @@ class MainActivity : AppCompatActivity() {
 
             true
         }
-
-
     }
 }

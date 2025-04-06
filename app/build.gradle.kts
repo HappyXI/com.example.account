@@ -81,6 +81,11 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
+    implementation(libs.mpandroidchart) // MPAndroid PieChart
+
+    implementation(libs.text.recognition) // ML kit OCR
+    implementation(libs.text.recognition.korean)
+
     // 중복된 com.intellij:annotations 라이브러리 제외
     configurations.all {
         exclude(group = "com.intellij", module = "annotations")

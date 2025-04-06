@@ -4,21 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E8EAF6"
-    android:padding="16dp">
+    android:background="#E8EAF6">
 
-    <!-- 제목 (설정) -->
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
+    <!-- 상단 툴바 -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/stats"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="설정"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:background="@color/primary"
+        app:title="설정"
+        app:titleCentered="true"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 목표 지출액 -->
     <TextView
@@ -29,9 +25,10 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="#000000"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintTop_toBottomOf="@id/stats"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="24dp"/>
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="12dp"/>
 
     <!-- 월 선택 -->
     <LinearLayout
@@ -47,10 +44,9 @@
 
         <Button
             android:id="@+id/btn_prev_month"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="◀"
-            android:backgroundTint="@android:color/darker_gray"
             android:textColor="@android:color/white"/>
 
         <TextView
@@ -65,10 +61,9 @@
 
         <Button
             android:id="@+id/btn_next_month"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="▶"
-            android:backgroundTint="@android:color/darker_gray"
             android:textColor="@android:color/white"/>
     </LinearLayout>
 
@@ -85,14 +80,15 @@
         app:layout_constraintTop_toBottomOf="@id/monthSelectorLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"/>
 
     <!-- 계정 확인 버튼 -->
     <Button
         android:id="@+id/btn_save_target"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="목표 저장"
+        android:text="목표 설정"
         android:textSize="16sp"
         android:padding="12dp"
         android:backgroundTint="#3F51B5"

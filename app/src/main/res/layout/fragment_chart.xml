@@ -2,32 +2,94 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#E8EAF6"
+    tools:context=".model.ChartFragment">
 
-    <!-- 목표 지출액 대비 사용량 -->
+    <!-- 상단 툴바 -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/stats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:title="카테고리별 지출량 통계"
+        app:titleCentered="true"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 월 선택 -->
+    <LinearLayout
+        android:id="@+id/monthSelectorLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/stats"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp">
+
+        <Button
+            android:id="@+id/btn_prev_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="◀"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/tv_current_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2025년 1월"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="16dp"
+            android:textColor="#000000"/>
+
+        <Button
+            android:id="@+id/btn_next_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="▶"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+
+    <!-- Pie Chart -->
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/stats"
+        app:layout_constraintTop_toBottomOf="@id/monthSelectorLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- 해당 월 목표 지출액 -->
     <TextView
-        android:id="@+id/tv_target_expense"
+        android:id="@+id/tv_target_month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1월 목표 지출액"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pieChart"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"/>
 
-    <!-- 퍼센트 표시 -->
+    <!-- 해당 월 목표 지출액 대비 사용량 -->
     <TextView
-        android:id="@+id/tv_Expense_Percentage"
+        android:id="@+id/tv_target_expense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0원"
         android:textSize="14sp"
         android:textColor="@android:color/holo_blue_dark"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/tv_target_expense"
+        app:layout_constraintTop_toBottomOf="@id/tv_target_month"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"/>
@@ -41,17 +103,17 @@
         android:progress="0"
         style="?android:attr/progressBarStyleHorizontal"
         android:progressTint="@color/primary"
-        app:layout_constraintTop_toBottomOf="@id/tv_Expense_Percentage"
+        app:layout_constraintTop_toBottomOf="@id/tv_target_expense"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginHorizontal="16dp"/>
     <!-- 목표 사용량 대비 안내 메시지 -->
     <TextView
         android:id="@+id/tv_expense_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="목표 지출액의 63%를 사용하셨어요!"
+        android:text="목표 지출액의 0%를 사용하셨어요!"
         android:textSize="14sp"
         android:gravity="start"
         app:layout_constraintTop_toBottomOf="@id/progressBar"

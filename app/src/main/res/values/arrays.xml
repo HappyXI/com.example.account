@@ -12,10 +12,12 @@
 
     <string-array name="expense_categories">
         <item>식비</item>
+        <item>생활비</item>
         <item>교통비</item>
-        <item>쇼핑</item>
-        <item>의료</item>
-        <item>공과금</item>
+        <item>의료비</item>
+        <item>패션/쇼핑</item>
+        <item>문화/여가</item>
+        <item>도서/교육</item>
         <item>기타</item>
     </string-array>
 </resources>

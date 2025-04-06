@@ -33,12 +33,13 @@
     <Spinner
         android:id="@+id/spinner_category"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/spinner_border"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintStart_toEndOf="@+id/tv_category_label"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- 설명 입력 -->
     <TextView
@@ -58,7 +59,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:hint="설명"
         android:inputType="text"
         app:layout_constraintTop_toBottomOf="@id/tv_category_label"
         app:layout_constraintStart_toEndOf="@id/tv_category_label"
@@ -82,7 +82,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
-        android:hint="금액"
         android:inputType="number"
         app:layout_constraintTop_toBottomOf="@id/et_description"
         app:layout_constraintStart_toEndOf="@id/tv_category_label"
@@ -96,7 +95,6 @@
         android:layout_marginTop="32dp"
         android:layout_marginStart="8dp"
         android:text="날짜"
-
         app:layout_constraintTop_toBottomOf="@id/tv_amount_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="@id/tv_category_label"/>
@@ -107,6 +105,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
+        android:text="2025-01-01"
         android:inputType="date"
         app:layout_constraintTop_toBottomOf="@id/et_amount"
         app:layout_constraintStart_toEndOf="@id/tv_category_label"

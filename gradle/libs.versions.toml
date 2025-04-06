@@ -14,9 +14,11 @@ material = "1.12.0"
 activity = "1.10.0"
 constraintlayout = "2.2.0"
 firebaseDatabaseKtx = "21.0.0"
+mpandroidchart = "v3.1.0"
 oauthJdk8 = "5.10.0"
 playServicesAuthVersion = "21.3.0"
 runtimeTracing = "1.7.6"
+textRecognition = "16.0.1"
 ui = "1.7.6"
 v2Share = "2.20.6"
 v2User = "2.20.6"
@@ -42,8 +44,11 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
+mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchart" }
 oauth-jdk8 = { module = "com.navercorp.nid:oauth", version.ref = "oauthJdk8" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuthVersion" }
+text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "textRecognition" }
+text-recognition-korean = { module = "com.google.mlkit:text-recognition-korean", version.ref = "textRecognition" }
 v2-share = { module = "com.kakao.sdk:v2-share", version.ref = "v2Share" }
 v2-user = { module = "com.kakao.sdk:v2-user", version.ref = "v2User" }
 googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }

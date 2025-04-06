@@ -6,6 +6,16 @@
     android:layout_height="match_parent">
 
     <!-- 상단 헤더 -->
+    <!-- 상단 툴바 -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/stats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:title="달력"
+        app:titleCentered="true"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/monthHeaderLayout"
         android:layout_width="match_parent"
@@ -13,7 +23,7 @@
         android:orientation="horizontal"
         android:padding="16dp"
         android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/stats">
 
         <Button
             android:id="@+id/btn_prev_month"

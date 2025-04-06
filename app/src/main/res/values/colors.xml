@@ -9,4 +9,13 @@
 
     <color name="red">#FF0000</color> <!-- 빨간색 -->
     <color name="primary">#5ABEF5</color> <!-- 하늘색 -->
+
+    <!-- 파이 차트 색상 -->
+    <color name="pastel_rainbow1">#FFADAD</color>  <!-- 연한 빨강 -->
+    <color name="pastel_rainbow2">#FFD6A5</color>  <!-- 연한 주황 -->
+    <color name="pastel_rainbow3">#FDFFB6</color>  <!-- 연한 노랑 -->
+    <color name="pastel_rainbow4">#CAFFBF</color>  <!-- 연한 초록 -->
+    <color name="pastel_rainbow5">#9BF6FF</color>  <!-- 연한 파랑 -->
+    <color name="pastel_rainbow6">#A0C4FF</color>  <!-- 연한 남색 -->
+    <color name="pastel_rainbow7">#BDB2FF</color>  <!-- 연한 보라 -->
 </resources>

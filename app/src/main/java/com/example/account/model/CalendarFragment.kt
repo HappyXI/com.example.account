@@ -39,17 +39,9 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         updateMonthDisplay()
 
         // 월 변경 버튼 클릭 이벤트
-        view.findViewById<View>(R.id.tv_current_month).setOnClickListener {
-            showMonthPickerDialog()
-        }
-
-        view.findViewById<View>(R.id.btn_prev_month).setOnClickListener {
-            changeMonth(-1)
-        }
-
-        view.findViewById<View>(R.id.btn_next_month).setOnClickListener {
-            changeMonth(1)
-        }
+        view.findViewById<View>(R.id.btn_prev_month).setOnClickListener { changeMonth(-1) }
+        view.findViewById<View>(R.id.btn_next_month).setOnClickListener { changeMonth(1) }
+        view.findViewById<View>(R.id.tv_current_month).setOnClickListener { showMonthPickerDialog() }
     }
 
     private fun setupRecyclerView() {
@@ -90,9 +82,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
             val income = transactionsForDay.filter { it.kind == "수익" }.sumOf { it.amount }
             val expense = transactionsForDay.filter { it.kind == "지출" }.sumOf { it.amount }
-            val TAG = "Calendar_Amount_TEST"
 
-            calendarList.add(CalendarDay(date, income, expense))
+            calendarList.add(CalendarDay(date, income, expense, transactionsForDay))
         }
 
         return calendarList
@@ -122,21 +113,15 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         if(day.income != 0 || day.expense != 0) {
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("${day.date} 내역")
-
+            val TAG = "Calendar_DATA_TEST!!!!"
             val detailsList = mutableListOf<String>()
 
             if (day.income > 0) {
                 detailsList.add("수익")
-                val TAG = "DATA_TEST!!!!"
-                Log.d(TAG, "")
                 for (transaction in day.transactions.filter { it.kind == "수익" }) {
+                    Log.d(TAG, "LIST AMOUNT = ${String.format("%,d", transaction.amount)}원")
                     detailsList.add(
-                        "  - ${
-                            String.format(
-                                "%,d",
-                                transaction.amount
-                            )
-                        }원 (${transaction.description})"
+                        "  - ${String.format("%,d", transaction.amount)}원 ${transaction.description}"
                     )
                 }
             }
@@ -145,16 +130,10 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                 detailsList.add("지출")
                 for (transaction in day.transactions.filter { it.kind == "지출" }) {
                     detailsList.add(
-                        "  - ${
-                            String.format(
-                                "%,d",
-                                transaction.amount
-                            )
-                        }원 (${transaction.description})"
+                        "  - ${String.format("%,d", transaction.amount)}원 ${transaction.description}"
                     )
                 }
             }
-
             val details = detailsList.joinToString("\n")  // ✅ 줄바꿈 적용
 
             builder.setMessage(details)
